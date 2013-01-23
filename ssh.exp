@@ -1,0 +1,41 @@
+#!/usr/bin/expect
+
+set DEPLOY_HOME [exec sh -c "cd `dirname $argv0`; pwd"]
+set servers [exec cat $DEPLOY_HOME/hosts | cut -f2 -d " "]
+set PASSWORD "kingnet"
+
+spawn /usr/bin/ssh-keygen -t rsa
+
+expect "*Enter file in which to save the key*" {send "\n"}
+expect {
+ "(y/n)?" { send "y\n"; exp_continue }
+ "*(empty for no passphrase):" { send "\n" }
+}
+expect "*same passphrase again*" { send "\n" }
+
+#copy ssh
+foreach server $servers {
+   expect "*:~*"
+   spawn echo "ssh-copy-id to " $server   
+   spawn /usr/bin/ssh-copy-id $server
+   expect {
+      "(yes/no)?" {
+         send "yes\n"
+         expect "assword:"
+         send "$PASSWORD\n"
+      }
+      "assword:" {
+         send "$PASSWORD\n"
+      }
+      "*:~*" {
+	continue
+      }
+   }
+}
+
+expect "*:~*"
+spawn /usr/bin/ssh-agent bash
+spawn /usr/bin/ssh-add ~/.ssh/id_rsa
+spawn echo "ssh-copy-id end."
+send "exit\n"
+expect eof
