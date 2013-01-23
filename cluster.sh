@@ -19,7 +19,7 @@ cat /dev/null > /etc/dsh/machines.list
 while read line
 do   
   host=`echo $line | cut -f2 -d " "`
-  sudo sh -c "echo $host > /etc/dsh/machines.list"
+  sudo sh -c "echo $host >> /etc/dsh/machines.list"
   if [[ "$host" != "${HOSTNAME}" ]]; then
     scp -r $DEPLOY_HOME $host:$DEPLOY_HOME/
   fi
