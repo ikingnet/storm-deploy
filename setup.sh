@@ -77,6 +77,10 @@ done < $DEPLOY_HOME/zkserver.list
 echo "storm.zookeeper.port: 2181" >> storm-0.8.1/conf/storm.yaml
 echo 'storm.local.dir: '${PWD}'/stormdata' >> storm-0.8.1/conf/storm.yaml
 echo 'nimbus.host: "'`head -n1 $DEPLOY_HOME/nimbus.host`'"' >> storm-0.8.1/conf/storm.yaml
+echo 'drpc.servers: ' >> storm-0.8.1/conf/storm.yaml
+echo ' - "'`head -n1 $DEPLOY_HOME/nimbus.host`'"' >> storm-0.8.1/conf/storm.yaml
+echo 'supervisor.scheduler.meta:' >> storm-0.8.1/conf/storm.yaml
+echo ' name: "'${HOSTNAME}'"' >> storm-0.8.1/conf/storm.yaml
 
 sed -i "/export STORM_HOME=/d" /etc/profile
 sed -i "/export PATH=\$STORM_HOME\/bin:\$PATH/d" /etc/profile
