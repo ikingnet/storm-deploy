@@ -6,6 +6,8 @@ source /etc/profile
 nohup storm nimbus > logs/nimbus.log 2>&1 &
 echo "starting storm ui servers.."
 nohup storm ui > logs/ui.log 2>&1 &
+echo "starting storm drpc server..."
+nohup storm drpc > logs/drpc.log 2>&1 &
 
 while read line
 do
