@@ -37,7 +37,7 @@ echo "dataLogDir=/var/log/zookeeper" >>  zookeeper-3.4.5/conf/zoo.cfg
 
 while read line
 do   
-  echo "server.${line:${#line}-1}:${line}:2888:3888" >> zookeeper-3.4.5/conf/zoo.cfg
+  echo "server.${line:${#line}-1}=${line}:2888:3888" >> zookeeper-3.4.5/conf/zoo.cfg
 done < $DEPLOY_HOME/zkserver.list
 echo "${HOSTNAME:${#HOSTNAME}-1}" > ${PWD}/zkdata/myid
 
